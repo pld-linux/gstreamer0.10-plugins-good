@@ -17,7 +17,8 @@
 %define		gst_req_ver	0.10.36
 %define		gstpb_req_ver	0.10.36
 
-%include	/usr/lib/rpm/macros.gstreamer
+%define		__gst_inspect	/usr/bin/gst-inspect-0.10
+
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer0.10-plugins-good
