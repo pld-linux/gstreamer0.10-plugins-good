@@ -23,11 +23,12 @@ Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer0.10-plugins-good
 Version:	0.10.31
-Release:	3
+Release:	4
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
 # Source0-md5:	555845ceab722e517040bab57f9ace95
+Patch0:		libv4l.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
@@ -479,6 +480,7 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 
 %prep
 %setup -q -n %{gstname}-%{version}
+%patch0 -p1
 
 %build
 %{__libtoolize}
