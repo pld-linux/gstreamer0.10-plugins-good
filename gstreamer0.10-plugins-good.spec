@@ -17,13 +17,11 @@
 %define		gst_req_ver	0.10.36
 %define		gstpb_req_ver	0.10.36
 
-%define		__gst_inspect	/usr/bin/gst-inspect-0.10
-
 Summary:	Good GStreamer Streaming-media framework plugins
 Summary(pl.UTF-8):	Dobre wtyczki do środowiska obróbki strumieni GStreamer
 Name:		gstreamer0.10-plugins-good
 Version:	0.10.31
-Release:	7
+Release:	8
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
@@ -104,6 +102,7 @@ Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gstlibdir 	%{_libdir}/gstreamer-%{gst_major_ver}
+%define		__gst_inspect	/usr/bin/gst-inspect-0.10
 
 %description
 GStreamer is a streaming-media framework, based on graphs of filters
@@ -126,6 +125,9 @@ Summary:	Good GStreamer streaming-media framework plugins API documentation
 Summary(pl.UTF-8):	Dokumentacja API dobrych wtyczek środowiska obróbki strumieni GStreamer
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 Good GStreamer streaming-media framework plugins API documentation.
