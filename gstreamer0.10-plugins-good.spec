@@ -32,7 +32,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gdk-pixbuf2-devel >= 2.8.0
-BuildRequires:	gettext-devel >= 0.17
+BuildRequires:	gettext-tools >= 0.17
 BuildRequires:	glib2-devel >= 1:2.24
 BuildRequires:	gstreamer0.10-devel >= %{gst_req_ver}
 BuildRequires:	gstreamer0.10-plugins-base-devel >= %{gstpb_req_ver}
