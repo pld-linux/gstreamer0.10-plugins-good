@@ -1,16 +1,16 @@
 #
 # Conditional build:
-%bcond_without	aalib		# don't build aa videosink plugin
-%bcond_without	apidocs		# disable gtk-doc
-%bcond_without	caca		# don't build caca videosink plugin
-%bcond_without	cairo		# don't build cairo plugin
-%bcond_with	esd		# build ESD plugin
-%bcond_without	gconf		# don't build GConf plugin
-%bcond_with	hal		# build HAL plugin
-%bcond_without	jack		# don't build JACK audio plugin
-%bcond_without	soup		# don't build libsoup 2.4 http source plugin
-%bcond_without	speex		# don't build speex plugin
-%bcond_without	wavpack		# don't build wavpack plugin
+%bcond_without	aalib		# aa videosink plugin
+%bcond_without	apidocs		# gtk-doc based API documentation
+%bcond_without	caca		# caca videosink plugin
+%bcond_without	cairo		# cairo plugin
+%bcond_with	esd		# ESD plugin
+%bcond_without	gconf		# GConf plugin
+%bcond_with	hal		# HAL plugin
+%bcond_without	jack		# JACK audio plugin
+%bcond_without	soup		# libsoup 2.4 http source plugin
+%bcond_without	speex		# speex plugin
+%bcond_without	wavpack		# wavpack plugin
 
 %define		gstname		gst-plugins-good
 %define		gst_major_ver	0.10
@@ -24,11 +24,13 @@ Version:	0.10.31
 Release:	8
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
+Source0:	https://gstreamer.freedesktop.org/src/gst-plugins-good/%{gstname}-%{version}.tar.xz
 # Source0-md5:	555845ceab722e517040bab57f9ace95
 Patch0:		libv4l.patch
 Patch1:		docs-fix-mismatched-para-tags.patch
-URL:		http://gstreamer.freedesktop.org/
+Patch2:		gstreamer-common-make.patch
+Patch3:		gstreamer-common-gtkdoc.patch
+URL:		https://gstreamer.freedesktop.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
@@ -43,6 +45,7 @@ BuildRequires:	libtool >= 1.4
 BuildRequires:	orc-devel >= 0.4.11
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	python >= 2.1
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.198
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -87,17 +90,17 @@ Requires:	glib2 >= 1:2.24
 Requires:	gstreamer0.10 >= %{gst_req_ver}
 Requires:	gstreamer0.10-plugins-base >= %{gstpb_req_ver}
 Requires:	orc >= 0.4.11
-Obsoletes:	gstreamer-avi
-Obsoletes:	gstreamer-flx
-%{!?with_hal:Obsoletes:	gstreamer-hal}
-Obsoletes:	gstreamer-matroska
-Obsoletes:	gstreamer-mixer
-Obsoletes:	gstreamer-navigation
-Obsoletes:	gstreamer-oss4
-Obsoletes:	gstreamer-rtp
-Obsoletes:	gstreamer-udp
+Obsoletes:	gstreamer-avi < 0.10
+Obsoletes:	gstreamer-flx < 0.10
+%{!?with_hal:Obsoletes:	gstreamer-hal < 1.0}
+Obsoletes:	gstreamer-matroska < 0.10
+Obsoletes:	gstreamer-mixer < 0.10
+Obsoletes:	gstreamer-navigation < 0.10
+Obsoletes:	gstreamer-oss4 < 0.10
+Obsoletes:	gstreamer-rtp < 0.10
+Obsoletes:	gstreamer-udp < 0.10
 %if %{without esd}
-Obsoletes:	gstreamer-audiosink-esd
+Obsoletes:	gstreamer-audiosink-esd < 1.0
 %endif
 Conflicts:	gstreamer-plugins-bad < 0.10.19
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -142,7 +145,7 @@ Group:		Libraries
 Requires(post,preun):	GConf2
 Requires:	gstreamer0.10 >= %{gst_req_ver}
 Obsoletes:	gstreamer-GConf < 1.0
-Obsoletes:	gstreamer-GConf-devel
+Obsoletes:	gstreamer-GConf-devel < 0.10
 
 %description -n gstreamer0.10-GConf
 Installation of GStreamer GConf schemas. These set usable defaults
@@ -160,7 +163,7 @@ Summary(pl.UTF-8):	Wtyczka wyjścia obrazu Ascii-art do GStreamera
 Group:		Libraries
 Requires:	gstreamer0.10 >= %{gst_req_ver}
 Provides:	gstreamer0.10-videosink = %{version}
-Obsoletes:	gstreamer-aalib
+Obsoletes:	gstreamer-aalib < 0.10
 Obsoletes:	gstreamer-videosink-aa < 1.0
 
 %description -n gstreamer0.10-videosink-aa
@@ -174,7 +177,7 @@ Summary:	Good GStreamer audio effects plugins
 Summary(pl.UTF-8):	Dobre wtyczki efektów dźwiękowych do GStreamera
 Group:		Libraries
 Requires:	gstreamer0.10-plugins-base >= %{gstpb_req_ver}
-Obsoletes:	gstreamer-audio-effects
+Obsoletes:	gstreamer-audio-effects < 0.10
 Obsoletes:	gstreamer-audio-effects-good < 1.0
 
 %description -n gstreamer0.10-audio-effects-good
@@ -232,7 +235,7 @@ Group:		Libraries
 Requires:	gstreamer0.10-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer0.10-audiosink = %{version}
 Obsoletes:	gstreamer-audiosink-esd < 1.0
-Obsoletes:	gstreamer-esound
+Obsoletes:	gstreamer-esound < 0.10
 
 %description -n gstreamer0.10-audiosink-esd
 Output plugin for GStreamer for use with the esound package.
@@ -288,7 +291,7 @@ Summary(pl.UTF-8):	Wtyczka serwera dźwięku JACK dla GStreamera
 Group:		Libraries
 Requires:	gstreamer0.10-plugins-base >= %{gstpb_req_ver}
 Provides:	gstreamer0.10-audiosink = %{version}
-Obsoletes:	gstreamer-jac < 1.0
+Obsoletes:	gstreamer-jack < 1.0
 
 %description -n gstreamer0.10-jack
 Plugin for the JACK professional sound server.
@@ -335,7 +338,7 @@ Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Provides:	gstreamer0.10-audiosink = %{version}
 Obsoletes:	gstreamer-audiosink-oss < 1.0
-Obsoletes:	gstreamer-oss
+Obsoletes:	gstreamer-oss < 0.10
 
 %description -n gstreamer0.10-audiosink-oss
 Plugins for output and input to the OpenSoundSystem audio drivers
@@ -354,8 +357,8 @@ Requires:	gstreamer0.10 >= %{gst_req_ver}
 Requires:	gstreamer0.10-plugins-base >= %{gstpb_req_ver}
 Requires:	pulseaudio >= 1.0
 Provides:	gstreamer0.10-audiosink = %{version}
-Obsoletes:	gstreamer-audiosink-polypaudio
-Obsoletes:	gstreamer-polypaudio
+Obsoletes:	gstreamer-audiosink-polypaudio < 0.10
+Obsoletes:	gstreamer-polypaudio < 0.10
 Obsoletes:	gstreamer-pulseaudio < 1.0
 
 %description -n gstreamer0.10-pulseaudio
@@ -508,6 +511,15 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 %setup -q -n %{gstname}-%{version}
 %patch0 -p1
 %patch1 -p1
+cd common
+%patch2 -p1
+%patch3 -p1
+cd ..
+
+# gtk-doc >= 1.27 requires UTF-8 input
+for f in gst/goom2k1/{filters.h,filters.c,goom_core.c} ; do
+	iconv -f iso-8859-2 -t utf-8 "$f" -o "$f"
+done
 
 %build
 %{__libtoolize}
@@ -523,14 +535,14 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_cairo:--disable-cairo} \
 	%{!?with_esd:--disable-esd} \
+	--enable-gtk-doc%{!?with_apidocs:=no} \
+	%{!?with_hal:--disable-hal} \
 	%{!?with_jack:--disable-jack} \
 	%{!?with_caca:--disable-libcaca} \
+	--enable-orc \
 	%{!?with_soup:--disable-soup} \
 	%{!?with_speex:--disable-speex} \
 	%{!?with_wavpack:--disable-wavpack} \
-	%{!?with_hal:--disable-hal} \
-	--enable-gtk-doc%{!?with_apidocs:=no} \
-	--enable-orc \
 	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
@@ -598,7 +610,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/gst-plugins-good-plugins-*
+%{_gtkdocdir}/gst-plugins-good-plugins-0.10
 %endif
 
 %if %{with gconf}
