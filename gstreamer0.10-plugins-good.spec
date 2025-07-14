@@ -509,11 +509,11 @@ Wtyczka obsługująca bezstratny format dźwięku Wavpack.
 
 %prep
 %setup -q -n %{gstname}-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 cd common
-%patch2 -p1
-%patch3 -p1
+%patch -P2 -p1
+%patch -P3 -p1
 cd ..
 
 # gtk-doc >= 1.27 requires UTF-8 input
